@@ -1,0 +1,37 @@
+body {
+	background: #fff5d6;
+	color: rgb(0, 0, 0);
+}
+
+.contenedor-main {
+	margin-bottom: 40px;
+}
+
+main {
+	background: #fff5d6;
+	color: #424242;
+	padding: 60px 0;
+}
+
+aside {
+	background: #fff5d6;
+	padding: 60px 0;
+	color: #090b0e;
+}
+
+.banner { object-fit: fill ;}
+
+.widgets {
+	margin-bottom: 20px;
+}
+
+.widgets > div {
+	background: #fff5d6;
+	color: rgb(13, 4, 4);
+	padding: 20px;
+}
+
+footer {
+	padding: 20px 0;
+	background: #fff5d6;
+}
