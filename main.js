@@ -14,9 +14,9 @@ class Producto {constructor (nombre, precio, cantidad, descripcion) //funcion co
                 this.descripcion = descripcion}}
 
 
-const planta = new Producto ("Planta", 400, 2, 'una planta') ; productos.push(planta)
-const kokedama = new Producto ("Kokedama", 1000, 1, 'una kokedama') ; productos.push(kokedama)
-const maceta = new Producto ("Maceta", 600, 0, '1 maceta') ; productos.push(maceta)
+const planta = new Producto ("planta", 400, 2, 'una planta') ; productos.push(planta)
+const kokedama = new Producto ("kokedama", 1000, 1, 'una kokedama') ; productos.push(kokedama)
+const maceta = new Producto ("maceta", 600, 0, '1 maceta') ; productos.push(maceta)
 
 
 //Definiendo las funciones del proceso de compra
