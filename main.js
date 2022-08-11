@@ -17,7 +17,7 @@ class Producto {constructor (nombre, precio, cantidad, descripcion, imagen) //fu
 
 const planta = new Producto ("Planta", 400, 2, 'una planta', "planta.jpeg") ; productos.push(planta)
 const kokedama = new Producto ("Kokedama", 1000, 1, 'una kokedama', "kokedama.jpeg") ; productos.push(kokedama)
-const maceta = new Producto ("Maceta", 600, 0, '1 maceta', "maceta.jpeg") ; productos.push(maceta)
+const maceta = new Producto ("Maceta", 600, 2, '1 maceta', "maceta.jpeg") ; productos.push(maceta)
 
 
 //Definiendo las funciones del proceso de compra
@@ -58,12 +58,13 @@ function agregarAlCarrito (productoElegido) {
     if(stock===false) {alert(`No hay mas stock de ${productoElegido.nombre} , lo sentimos mucho`)}
     else {carrito.push(productoElegido)
     alert(`Agregaste ${productoElegido.nombre} al carrito`)
-    console.log("Elegiste Kokedama, su precio es $"+productoElegido.precio);
+    console.log("Elegiste "+productoElegido.nombre+", su precio es $"+productoElegido.precio);
     totalCarrito = carrito.reduce((suma,el) => (suma + el.precio),0) ;
     console.log("Tu carrito tiene $"+totalCarrito)
     actualizarStock(productoElegido.nombre)
     console.log("Te mostramos tu carrito") ; 
-    console.table(carrito)}
+    console.table(carrito) //agregar al local storage el carrito
+}
 }
 /* 
 const botonKokedamaCarrito = document.getElementById(`Kokedamabtn`) ;
