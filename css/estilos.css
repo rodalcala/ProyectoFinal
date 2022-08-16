@@ -34,8 +34,17 @@ aside {
 }
 
 footer {
-	padding: 20px 0;
+	padding: 50px;
 	background: #fff5d6;
+
 }
 
 .card {width: 18rem}
+
+#tucarrito {font-size: 22px;
+}
+
+#table {
+align-self: center;
+padding: 50px;;}
+  

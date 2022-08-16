@@ -13,7 +13,7 @@
 		<header class="row">
 			<div class="col">
 				<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-					<div class="container-fluid">
+					<div class="container-fluid ">
 					  <a class="navbar-brand" href="#">Menu</a>
 					  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
@@ -27,8 +27,12 @@
 							<a class="nav-link" href="contacto.html">Contacto</a>
 						  </li>
 						  <li class="nav-item">
-							<a class="nav-link " href="carrito.html">Tu carrito</a>
+							<a class="nav-link " href="nosotros.html">Nosotros</a>
 						  </li>
+						   <button type="button" class="btn btn-light" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  	                       Ver carrito
+						  </button>
+						
 						</ul>
 					  </div>
 					</div>
@@ -38,23 +42,65 @@
 			<img class="col banner" src="kokekosas.png" alt="Kokekosas" >
 		</header>
 
-		<section class="contenedor-main row align-items-center">
+		<section class="row align-items-center">
 			<main class="col">
 				<h2 class="h2" id="h2">BIENVENIDO!!</h2>
 				<p>Kokekosas en una tienda especialmente creada para ofrecer kokedamas de autor. El arte de hacer kokedamas es una antigua técnica japonesa, “kokedama” significa en japonés bola de musgo (koke = musgo y dama = bola). Esta técnica permite mantener una planta utilizando una maceta viva, acercándote mucho más a la naturaleza. Para nosotros una kokadama es un bosque en miniatura, el olor del musgo nos transporta a estar caminando en un sotobosque, húmedo, sombrío, verde, VIVO! </p>
 			</main>
 		</section>
 
+		
+<!--cards-->
 		<section class="row widgets justify-content-evenly" id="cards">
 			<!--aqui las cards de productos-->		
 		</section>
+	
 
-		<footer class="row">
-			<div class="col">
-				<p>Copyright © 2022 Kokekosas </p>
+		</section>
+		<footer class="row justify-content-center">
+			<div class="col-5">
+				<p class="center">Copyright © 2022 Kokekosas</p>
 			</div>
 		</footer>
-	</div>
+
+<!--modal de carrito-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tu carrito</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table" >
+				<thead>
+					<tr>
+					<th class="col-3" scope="col">Nombre</th>
+					<th class="col-2" scope="col">Precio</th>
+					<th class="col-2" scope="col">Cantidad</th>
+					<th class="col-3" scope="col">Precio total</th>
+					<th class="col-2" scope="col">Borrar</th>
+					</tr>
+				</thead>
+				<tbody id="tbody">
+					<!--carrito-->	
+				</tbody>
+				<tfoot >
+					<tr id="tfoot"> 
+					<th colspan="12"> No cargaste nada a tu carrito </th>
+					</tr>
+				</tfoot>
+			</table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Continuar comprando</button>
+        <button type="button" class="btn btn-light">Terminar compra</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
 
 	<script src="js/bootstrap.bundle.min.js"></script>
     <script src="main.js"></script>
