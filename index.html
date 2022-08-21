@@ -32,7 +32,10 @@
 						   <button type="button" class="btn btn-light" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
   	                       Ver carrito
 						  </button>
-						
+						  <div class="col input-group flex-wrap">
+							<span class="input-group-text" id="addon-wrapping">@</span>
+							<input type="text" class="form-control" placeholder="Buscar">
+						  </div>
 						</ul>
 					  </div>
 					</div>
@@ -49,6 +52,16 @@
 			</main>
 		</section>
 
+<!--filtros-->
+		<div class="input-group mb-3" id="filtros">
+			<label class="input-group-text" for="inputGroupSelect01">Filtros</label>
+			<select class="form-select" id="inputGroupSelect01">
+			  <option selected>Mas vendidos</option>
+			  <option value="1">Precio creciente</option>
+			  <option value="2">Precio decreciente</option>
+			  <option value="3">A - Z</option>
+			</select>
+		  </div>
 		
 <!--cards-->
 		<section class="row widgets justify-content-evenly" id="cards">
@@ -79,6 +92,7 @@
 					<th class="col-2" scope="col">Precio</th>
 					<th class="col-2" scope="col">Cantidad</th>
 					<th class="col-3" scope="col">Precio total</th>
+					<th class="col-3" scope="col">Borrar</th>
 					</tr>
 				</thead>
 				<tbody id="tbody">

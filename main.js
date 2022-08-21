@@ -23,7 +23,7 @@ let carrito = []
 if (localStorage.getItem("carrito")){carrito = JSON.parse(localStorage.getItem("carrito"))}
 if (localStorage.getItem("productos")){productos = JSON.parse(localStorage.getItem("productos"))}
 else{localStorage.setItem("productos",JSON.stringify(productos))}
-crearCarritoOnStorage() //Agrega a la lista de carrito los items que habia on storage
+crearCarrito() //Agrega a la lista de carrito los items que habia on storage
 mostrarTotalCarrito() //Calculo de total del carrito on storage y Muestra total
 
 
@@ -32,7 +32,6 @@ mostrarTotalCarrito() //Calculo de total del carrito on storage y Muestra total
 function actualizarStock(productoIngresado) {
     productoIngresado.stock = productoIngresado.stock - 1 
 }
-
 
 function verificarStock(productoIngresado) {
     if (productoIngresado.stock >= 1){stock=true}else{stock=false}
@@ -50,25 +49,50 @@ function mostrarTotalCarrito() {
     {tfoot.innerHTML = `<th colspan="12"> El total de tu carrito es de $${totalCarrito}</th>`}
  }
 
-function crearCarritoOnStorage() {
+function crearCarrito() {
     carrito.forEach(productoCarrito => {
     const productoAgregado = document.createElement("tr")
     productoAgregado.innerHTML =
                     `<td>${productoCarrito.nombre}</td>
 					<td>$${productoCarrito.precio}</td>
                     <td>${productoCarrito.can}</td>
-                    <td>$${productoCarrito.precio*productoCarrito.can}</td>`
+                    <td>$${productoCarrito.precio*productoCarrito.can}</td>
+                    <td><button id="borrar${productoCarrito.nombre}" type="button" class="btn btn-dark">Borrar</button></td>`
     tabla.appendChild(productoAgregado)
+    document.getElementById(`borrar${productoCarrito.nombre}`).addEventListener("click",function(){borrarProductoCarrito(productoCarrito)});
 })}
 
-function crearLineaEnCarrito(productoElegido) {
+function borrarProductoCarrito(productoDeCarrito) {
+    tabla.innerHTML= ""
+    if (productoDeCarrito.can !== 1){
+        productoDeCarrito.can-=1
+    }else{
+        carrito.splice((carrito.indexOf(productoDeCarrito)),1)}
+    let productoEnProductos = productos.find(producto => producto.nombre === productoDeCarrito.nombre)
+    productoEnProductos.stock+=1
+    crearCarrito()
+    mostrarTotalCarrito()
+    guardarEnLocalStorage()
+}
+
+function mostrarSinStock(productoElegido) {
+    const precio = document.getElementById(`stock${productoElegido.nombre}`)
+    const sinStock = document.createElement("p") ;
+    sinStock.innerHTML = `Sin stock`;
+    sinStock.id = "stock"
+    console.log(sinStock)
+    precio.appendChild(sinStock) ;
+}
+
+/* function crearLineaEnCarrito(productoElegido) {
     const productoAgregado = document.createElement("tr")
     productoAgregado.innerHTML =
                     `<td>${productoElegido.nombre}</td>
 					<td>$${productoElegido.precio}</td>
                     <td>${productoElegido.can}</td>
-                    <td>$${productoElegido.precio*productoElegido.can}</td>`
-    tabla.appendChild(productoAgregado)}
+                    <td>$${productoElegido.precio*productoElegido.can}</td>
+                    <td><button id="borrar${productoCarrito.nombre}" type="button" class="btn btn-dark">Borrar</button></td>`
+    tabla.appendChild(productoAgregado)} */
 
 /* function cambiarCantidad() {
     productos.forEach (producto => {   
@@ -80,40 +104,38 @@ function crearLineaEnCarrito(productoElegido) {
 
 function agregarAlCarrito (productoElegido) {
     stock = verificarStock(productoElegido)
-    if(stock===false) {alert(`No hay mas stock de ${productoElegido.nombre} , lo sentimos mucho`)}
-        else {const existe = carrito.find(producto => producto.nombre === productoElegido.nombre);
-            if (existe===undefined) 
-            {carrito.push(productoElegido)
-            crearLineaEnCarrito(productoElegido)}
-            else
-            {existe.can=existe.can+1;
+    if(stock===true) 
+           {const existe = carrito.find(producto => producto.nombre === productoElegido.nombre);
+            if (existe===undefined) {
+                carrito.push(productoElegido)
+            }else{
+                existe.can=existe.can+1;
+            }
             tabla.innerHTML= ""
-            crearCarritoOnStorage()}
+            crearCarrito()
                 //alert(`Agregaste ${productoElegido.nombre} al carrito`) pero mas lindos
             actualizarStock(productoElegido)
             mostrarTotalCarrito()
             guardarEnLocalStorage()
-        }}
+            stock = verificarStock(productoElegido)
+            if (stock === false ) {mostrarSinStock(productoElegido);}      
+         }
+}
 
 
-//Creando las cards para cada producto
+//Creando las cards para cada producto Y Evento agregando al carrito la card elegida
 
 for (const producto of productos) {
     const card = document.createElement("div") ;
     card.innerHTML = `<img src="${producto.imagen}" class="card-img-top" alt="${producto.nombre}">
       <div class="card-body">                 
       <h5 class="card-title">${producto.nombre}</h5>
-      <p class="card-text">$${producto.precio}</p>
+      <p id="stock${producto.nombre}" class="card-text">$${producto.precio}</p>
       <a class="btn btn-dark" href="#table" id="${producto.nombre}btn">Agregar ${producto.nombre} a carrito</a>
     </div>` ;
     card.className = "card col-12 col-md-4 col-lg-3" ;
     cards.appendChild(card) ;
+    document.getElementById(`${producto.nombre}btn`).addEventListener("click",function(){agregarAlCarrito(producto)})
 }
 
 
-
-//Agregando al carrito la card elegida
-
-/* cambiarCantidad() */
-productos.forEach(producto => 
-    {document.getElementById(`${producto.nombre}btn`).addEventListener("click",function(){agregarAlCarrito(producto)})});

@@ -48,3 +48,9 @@ footer {
 align-self: center;
 padding: 50px;;}
   
+
+#filtros {
+padding: 50px;
+}
+
+#stock {color: red;}
