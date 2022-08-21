@@ -18,6 +18,7 @@ const cards = document.getElementById("cards")
 const tabla = document.getElementById("tbody")
 const tfoot = document.getElementById("tfoot")
 
+
 //Verificar que el storage no tenga un carrito y stock de productos guardado y si es asi agregarlo al carrito actual
 let carrito = []
 if (localStorage.getItem("carrito")){carrito = JSON.parse(localStorage.getItem("carrito"))}
@@ -73,15 +74,16 @@ function borrarProductoCarrito(productoDeCarrito) {
     crearCarrito()
     mostrarTotalCarrito()
     guardarEnLocalStorage()
+    mostrarSinStock(productoDeCarrito)
 }
 
 function mostrarSinStock(productoElegido) {
-    const precio = document.getElementById(`stock${productoElegido.nombre}`)
-    const sinStock = document.createElement("p") ;
-    sinStock.innerHTML = `Sin stock`;
-    sinStock.id = "stock"
-    console.log(sinStock)
-    precio.appendChild(sinStock) ;
+    const sinStock = document.getElementById(`stock${productoElegido.nombre}`)
+    stock = verificarStock(productoElegido)
+    if (stock===true){
+    sinStock.innerHTML=""
+}else{
+    sinStock.innerHTML = `Sin stock`;}
 }
 
 /* function crearLineaEnCarrito(productoElegido) {
@@ -117,10 +119,9 @@ function agregarAlCarrito (productoElegido) {
             actualizarStock(productoElegido)
             mostrarTotalCarrito()
             guardarEnLocalStorage()
-            stock = verificarStock(productoElegido)
-            if (stock === false ) {mostrarSinStock(productoElegido);}      
+            mostrarSinStock(productoElegido);}      
          }
-}
+
 
 
 //Creando las cards para cada producto Y Evento agregando al carrito la card elegida
@@ -130,7 +131,8 @@ for (const producto of productos) {
     card.innerHTML = `<img src="${producto.imagen}" class="card-img-top" alt="${producto.nombre}">
       <div class="card-body">                 
       <h5 class="card-title">${producto.nombre}</h5>
-      <p id="stock${producto.nombre}" class="card-text">$${producto.precio}</p>
+      <p class="card-text">$${producto.precio}</p>
+      <p id="stock${producto.nombre}" class="card-text stock"></p>
       <a class="btn btn-dark" href="#table" id="${producto.nombre}btn">Agregar ${producto.nombre} a carrito</a>
     </div>` ;
     card.className = "card col-12 col-md-4 col-lg-3" ;
