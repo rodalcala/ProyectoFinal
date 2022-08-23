@@ -21,22 +21,20 @@ const tfoot = document.getElementById("tfoot")
 
 //Verificar que el storage no tenga un carrito y stock de productos guardado y si es asi agregarlo al carrito actual
 let carrito = []
-if (localStorage.getItem("carrito")){carrito = JSON.parse(localStorage.getItem("carrito"))}
-if (localStorage.getItem("productos")){productos = JSON.parse(localStorage.getItem("productos"))}
-else{localStorage.setItem("productos",JSON.stringify(productos))}
+localStorage.getItem("carrito") && (carrito = JSON.parse(localStorage.getItem("carrito"))) ;
+localStorage.getItem("productos") ? productos = JSON.parse(localStorage.getItem("productos")) : localStorage.setItem("productos",JSON.stringify(productos)) ;
 crearCarrito() //Agrega a la lista de carrito los items que habia on storage
+/* carrito.forEach (producto => {mostrarSinStock(producto)}) */ //agregar si hay stock o no, no me 
 mostrarTotalCarrito() //Calculo de total del carrito on storage y Muestra total
-
 
 
 //Definiendo las funciones del proceso de compra
 function actualizarStock(productoIngresado) {
-    productoIngresado.stock = productoIngresado.stock - 1 
+    productoIngresado.stock = productoIngresado.stock - 1 ;
 }
 
 function verificarStock(productoIngresado) {
-    if (productoIngresado.stock >= 1){stock=true}else{stock=false}
-    return stock
+    return stock = productoIngresado.stock >= 1 ? true : false ;
 }
 
 function guardarEnLocalStorage() {
@@ -46,8 +44,7 @@ function guardarEnLocalStorage() {
 
 function mostrarTotalCarrito() {    
     totalCarrito = carrito.reduce((suma,el) => (suma + (el.precio*el.can)),0)
-    if (carrito.length === 0){tfoot.innerHTML =`<th colspan="12"> No cargaste nada a tu carrito </th>`} else
-    {tfoot.innerHTML = `<th colspan="12"> El total de tu carrito es de $${totalCarrito}</th>`}
+    carrito.length === 0 ? tfoot.innerHTML =`<th colspan="12"> No cargaste nada a tu carrito </th>` : tfoot.innerHTML = `<th colspan="12"> El total de tu carrito es de $${totalCarrito}</th>`
  }
 
 function crearCarrito() {
@@ -65,36 +62,20 @@ function crearCarrito() {
 
 function borrarProductoCarrito(productoDeCarrito) {
     tabla.innerHTML= ""
-    if (productoDeCarrito.can !== 1){
-        productoDeCarrito.can-=1
-    }else{
-        carrito.splice((carrito.indexOf(productoDeCarrito)),1)}
-    let productoEnProductos = productos.find(producto => producto.nombre === productoDeCarrito.nombre)
-    productoEnProductos.stock+=1
-    crearCarrito()
-    mostrarTotalCarrito()
-    guardarEnLocalStorage()
-    mostrarSinStock(productoDeCarrito)
+    productoDeCarrito.can !== 1 ? productoDeCarrito.can-=1 : carrito.splice((carrito.indexOf(productoDeCarrito)),1) ;
+    let productoEnProductos = productos.find(producto => producto.nombre === productoDeCarrito.nombre) ;
+    productoEnProductos.stock+=1 ;
+    crearCarrito() ;
+    mostrarTotalCarrito() ;
+    guardarEnLocalStorage() ;
+    mostrarSinStock(productoDeCarrito) ;
 }
 
 function mostrarSinStock(productoElegido) {
-    const sinStock = document.getElementById(`stock${productoElegido.nombre}`)
-    stock = verificarStock(productoElegido)
-    if (stock===true){
-    sinStock.innerHTML=""
-}else{
-    sinStock.innerHTML = `Sin stock`;}
+    const sinStock = document.getElementById(`stock${productoElegido.nombre}`) ;
+    stock = verificarStock(productoElegido) ;
+    stock===true ? sinStock.innerHTML="" : sinStock.innerHTML = `Sin stock` ;
 }
-
-/* function crearLineaEnCarrito(productoElegido) {
-    const productoAgregado = document.createElement("tr")
-    productoAgregado.innerHTML =
-                    `<td>${productoElegido.nombre}</td>
-					<td>$${productoElegido.precio}</td>
-                    <td>${productoElegido.can}</td>
-                    <td>$${productoElegido.precio*productoElegido.can}</td>
-                    <td><button id="borrar${productoCarrito.nombre}" type="button" class="btn btn-dark">Borrar</button></td>`
-    tabla.appendChild(productoAgregado)} */
 
 /* function cambiarCantidad() {
     productos.forEach (producto => {   
@@ -108,21 +89,16 @@ function agregarAlCarrito (productoElegido) {
     stock = verificarStock(productoElegido)
     if(stock===true) 
            {const existe = carrito.find(producto => producto.nombre === productoElegido.nombre);
-            if (existe===undefined) {
-                carrito.push(productoElegido)
-            }else{
-                existe.can=existe.can+1;
-            }
-            tabla.innerHTML= ""
-            crearCarrito()
-                //alert(`Agregaste ${productoElegido.nombre} al carrito`) pero mas lindos
-            actualizarStock(productoElegido)
-            mostrarTotalCarrito()
-            guardarEnLocalStorage()
-            mostrarSinStock(productoElegido);}      
-         }
-
-
+            existe===undefined ? carrito.push(productoElegido) : existe.can=existe.can+1;
+            tabla.innerHTML= "" ;
+            crearCarrito() ;
+                //agregar alert(`Agregaste ${productoElegido.nombre} al carrito`) pero mas lindos
+            actualizarStock(productoElegido) ;
+            mostrarTotalCarrito() ;
+            guardarEnLocalStorage() ;
+            mostrarSinStock(productoElegido);
+        }
+}      
 
 //Creando las cards para cada producto Y Evento agregando al carrito la card elegida
 
