@@ -17,7 +17,7 @@ let totalCarrito ;
 const cards = document.getElementById("cards") 
 const tabla = document.getElementById("tbody")
 const tfoot = document.getElementById("tfoot")
-
+const terminarCompra = document.getElementById("terminarCompra")
 
 //Verificar que el storage no tenga un carrito y stock de productos guardado y si es asi agregarlo al carrito actual
 let carrito = []
@@ -62,7 +62,7 @@ function crearCarrito() {
 
 function borrarProductoCarrito(productoDeCarrito) {
     tabla.innerHTML= ""
-    productoDeCarrito.can !== 1 ? productoDeCarrito.can-=1 : carrito.splice((carrito.indexOf(productoDeCarrito)),1) ;
+    productoDeCarrito.can !== 1 ? productoDeCarrito.can-=1 : (productoDeCarrito.can-=1 , carrito.splice((carrito.indexOf(productoDeCarrito)),1)) ;
     let productoEnProductos = productos.find(producto => producto.nombre === productoDeCarrito.nombre) ;
     productoEnProductos.stock+=1 ;
     crearCarrito() ;
@@ -95,10 +95,42 @@ function agregarAlCarrito (productoElegido) {
                 //agregar alert(`Agregaste ${productoElegido.nombre} al carrito`) pero mas lindos
             actualizarStock(productoElegido) ;
             mostrarTotalCarrito() ;
-            guardarEnLocalStorage() ;
-            mostrarSinStock(productoElegido);
-        }
+            guardarEnLocalStorage() ;;
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: `Agregaste ${productoElegido.nombre} a tu carrito`,
+                showConfirmButton: false,
+                timer: 1500
+              })
+        }  mostrarSinStock(productoElegido)
 }      
+
+function terminandoCompra () { if (carrito.length !== 0){
+     Swal.fire({
+    position: 'center',
+    icon: 'success',
+    text: 'Tu compra fue realizada con exito',
+    title: 'Gracias por tu compra',
+    showConfirmButton: false,
+    timer: 2000
+    })
+    carrito = [];
+    localStorage.removeItem("carrito");
+    tabla.innerHTML= "";
+    crearCarrito();
+    mostrarTotalCarrito();
+}else{
+    Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'No hay nada en tu carrito',
+        text: 'Elige un producto e intentalo de nuevo',
+        showConfirmButton: false,
+        timer: 3000
+      })
+}
+}
 
 //Creando las cards para cada producto Y Evento agregando al carrito la card elegida
 
@@ -116,4 +148,5 @@ for (const producto of productos) {
     document.getElementById(`${producto.nombre}btn`).addEventListener("click",function(){agregarAlCarrito(producto)})
 }
 
+terminarCompra.onclick = () => {terminandoCompra()}
 
