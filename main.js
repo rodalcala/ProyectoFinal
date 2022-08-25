@@ -106,30 +106,7 @@ function agregarAlCarrito (productoElegido) {
         }  mostrarSinStock(productoElegido)
 }      
 
-function terminandoCompra () { if (carrito.length !== 0){
-     Swal.fire({
-    position: 'center',
-    icon: 'success',
-    text: 'Tu compra fue realizada con exito',
-    title: 'Gracias por tu compra',
-    showConfirmButton: false,
-    timer: 2000
-    })
-    carrito = [];
-    localStorage.removeItem("carrito");
-    tabla.innerHTML= "";
-    crearCarrito();
-    mostrarTotalCarrito();
-}else{
-    Swal.fire({
-        position: 'center',
-        icon: 'error',
-        title: 'No hay nada en tu carrito',
-        text: 'Elige un producto e intentalo de nuevo',
-        showConfirmButton: false,
-        timer: 3000
-      })
-}
+function terminandoCompra () { 
 }
 
 //Creando las cards para cada producto Y Evento agregando al carrito la card elegida
@@ -148,5 +125,28 @@ for (const producto of productos) {
     document.getElementById(`${producto.nombre}btn`).addEventListener("click",function(){agregarAlCarrito(producto)})
 }
 
-terminarCompra.onclick = () => {terminandoCompra()}
+terminarCompra.onclick = () => { if (carrito.length !== 0){
+    Swal.fire({
+   position: 'center',
+   icon: 'success',
+   text: 'Tu compra fue realizada con exito',
+   title: 'Gracias por tu compra',
+   showConfirmButton: false,
+   timer: 2000
+   })
+   carrito = [];
+   localStorage.removeItem("carrito");
+   tabla.innerHTML= "";
+   crearCarrito();
+   mostrarTotalCarrito();
+}else{
+   Swal.fire({
+       position: 'center',
+       icon: 'error',
+       title: 'No hay nada en tu carrito',
+       text: 'Elige un producto e intentalo de nuevo',
+       showConfirmButton: false,
+       timer: 3000
+     })
+}}
 
