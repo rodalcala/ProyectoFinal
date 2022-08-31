@@ -13,13 +13,14 @@ const maceta = new Producto ("Maceta", 600, 2, "maceta.jpeg", 1) ; productos.pus
 
 //Obteniendo nuestra base de productos desde JSON
 function obtenerJsonLocal(){
-    fetch("/productos.json")
-        .then( (respuesta) => respuesta.json())
-        .then( (data) => {productos = data ; console.log(productos)} );
-        }
+    fetch('/productos.json')
+    .then( (respuesta) => respuesta.json())
+    .then((data) => { productos.push(data)});
+}
 
 obtenerJsonLocal()
 console.log(productos)
+
 
 //Definiendo variables y obteniendo elementos
 let stock ;
@@ -88,6 +89,8 @@ function mostrarSinStock(productoElegido) {
     stock = verificarStock(productoElegido) ;
     stock===true ? sinStock.innerHTML="" : sinStock.innerHTML = `Sin stock` ;
 }
+
+
 
 /* function filtrarMenorPrecio(){
     productos.sort(((a, b) => a.precio - b.precio));
