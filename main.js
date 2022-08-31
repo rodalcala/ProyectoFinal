@@ -1,6 +1,6 @@
 //Definiendo nuestros productos y su stock
 let productos = []
-class Producto {constructor (nombre, precio, stockInicial, imagen, can) //funcion constructora de productos objetos
+/* class Producto {constructor (nombre, precio, stockInicial, imagen, can) //funcion constructora de productos objetos
                 {this.nombre = nombre
                 this.precio = precio
                 this.stock = parseInt(stockInicial) //stock inicial del producto
@@ -9,15 +9,27 @@ class Producto {constructor (nombre, precio, stockInicial, imagen, can) //funcio
 
 const planta = new Producto ("Planta", 400, 2, "planta.jpeg", 1) ; productos.push(planta)
 const kokedama = new Producto ("Kokedama", 1000, 2, "kokedama.jpeg", 1) ; productos.push(kokedama)
-const maceta = new Producto ("Maceta", 600, 2, "maceta.jpeg", 1) ; productos.push(maceta)
+const maceta = new Producto ("Maceta", 600, 2, "maceta.jpeg", 1) ; productos.push(maceta) */
+
+//Obteniendo nuestra base de productos desde JSON
+function obtenerJsonLocal(){
+    fetch("/productos.json")
+        .then( (respuesta) => respuesta.json())
+        .then( (data) => {productos = data ; console.log(productos)} );
+        }
+
+obtenerJsonLocal()
+console.log(productos)
 
 //Definiendo variables y obteniendo elementos
-let stock 
+let stock ;
 let totalCarrito ;
 const cards = document.getElementById("cards") 
 const tabla = document.getElementById("tbody")
 const tfoot = document.getElementById("tfoot")
 const terminarCompra = document.getElementById("terminarCompra")
+const precioCreciente = document.getElementById("precioCreciente") 
+
 
 //Verificar que el storage no tenga un carrito y stock de productos guardado y si es asi agregarlo al carrito actual
 let carrito = []
@@ -77,6 +89,12 @@ function mostrarSinStock(productoElegido) {
     stock===true ? sinStock.innerHTML="" : sinStock.innerHTML = `Sin stock` ;
 }
 
+/* function filtrarMenorPrecio(){
+    productos.sort(((a, b) => a.precio - b.precio));
+    console.log(productos)
+    creandoCard()
+} */
+
 /* function cambiarCantidad() {
     productos.forEach (producto => {   
     let cantidadProductos = document.getElementById(`cantidad-producto-${producto.nombre}`);
@@ -101,16 +119,13 @@ function agregarAlCarrito (productoElegido) {
                 icon: 'success',
                 title: `Agregaste ${productoElegido.nombre} a tu carrito`,
                 showConfirmButton: false,
-                timer: 1500
+                timer: 1500,
               })
         }  mostrarSinStock(productoElegido)
-}      
-
-function terminandoCompra () { 
 }
 
 //Creando las cards para cada producto Y Evento agregando al carrito la card elegida
-
+function creandoCard() {
 for (const producto of productos) {
     const card = document.createElement("div") ;
     card.innerHTML = `<img src="${producto.imagen}" class="card-img-top" alt="${producto.nombre}">
@@ -124,7 +139,10 @@ for (const producto of productos) {
     cards.appendChild(card) ;
     document.getElementById(`${producto.nombre}btn`).addEventListener("click",function(){agregarAlCarrito(producto)})
 }
+}
 
+/* precioCreciente.addEventListener("click",filtrarMenorPrecio())
+ */
 terminarCompra.onclick = () => { if (carrito.length !== 0){
     Swal.fire({
    position: 'center',
@@ -149,4 +167,7 @@ terminarCompra.onclick = () => { if (carrito.length !== 0){
        timer: 3000
      })
 }}
+
+
+
 

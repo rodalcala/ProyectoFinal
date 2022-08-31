@@ -1,0 +1,25 @@
+ [               
+                {
+                "nombre":"Planta",
+                "precio":400,
+                "stock":2,
+                "imagen":"planta.jpeg",
+                "can":1
+                },
+                
+                {
+                "nombre":"Maceta",
+                "precio":600,
+                "stock":2,
+                "imagen":"maceta.jpeg",
+                "can":1
+                },
+
+                {
+                "nombre":"Kokedama",
+                "precio":1000,
+                "stock":2,
+                "imagen":"kokedama.jpeg",
+                "can":1
+                }
+ ]
