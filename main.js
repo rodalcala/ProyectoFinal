@@ -1,5 +1,3 @@
-//Definiendo nuestros productos y su stock
-let productos = []
 /* class Producto {constructor (nombre, precio, stockInicial, imagen, can) //funcion constructora de productos objetos
                 {this.nombre = nombre
                 this.precio = precio
@@ -11,18 +9,18 @@ const planta = new Producto ("Planta", 400, 2, "planta.jpeg", 1) ; productos.pus
 const kokedama = new Producto ("Kokedama", 1000, 2, "kokedama.jpeg", 1) ; productos.push(kokedama)
 const maceta = new Producto ("Maceta", 600, 2, "maceta.jpeg", 1) ; productos.push(maceta) */
 
-//Obteniendo nuestra base de productos desde JSON
-function obtenerJsonLocal(){
-    fetch('/productos.json')
-    .then( (respuesta) => respuesta.json())
-    .then((data) => { productos.push(data)});
+//Obteniendo nuestra base de productos desde JSON y renderizandolos
+async function obtenerJsonLocal(){
+    const JSON = await fetch('/productos.json') ;
+    const data = await JSON.json() ;
+    productos = data ;
+    verificarLocalStorage()
+    creandoCard()
 }
-
 obtenerJsonLocal()
-console.log(productos)
-
 
 //Definiendo variables y obteniendo elementos
+let productos = []
 let stock ;
 let totalCarrito ;
 const cards = document.getElementById("cards") 
@@ -31,11 +29,14 @@ const tfoot = document.getElementById("tfoot")
 const terminarCompra = document.getElementById("terminarCompra")
 const precioCreciente = document.getElementById("precioCreciente") 
 
-
 //Verificar que el storage no tenga un carrito y stock de productos guardado y si es asi agregarlo al carrito actual
 let carrito = []
+function verificarLocalStorage(){
 localStorage.getItem("carrito") && (carrito = JSON.parse(localStorage.getItem("carrito"))) ;
 localStorage.getItem("productos") ? productos = JSON.parse(localStorage.getItem("productos")) : localStorage.setItem("productos",JSON.stringify(productos)) ;
+}
+
+verificarLocalStorage()
 crearCarrito() //Agrega a la lista de carrito los items que habia on storage
 /* carrito.forEach (producto => {mostrarSinStock(producto)}) */ //agregar si hay stock o no, no me 
 mostrarTotalCarrito() //Calculo de total del carrito on storage y Muestra total
@@ -77,7 +78,7 @@ function borrarProductoCarrito(productoDeCarrito) {
     tabla.innerHTML= ""
     productoDeCarrito.can !== 1 ? productoDeCarrito.can-=1 : (productoDeCarrito.can-=1 , carrito.splice((carrito.indexOf(productoDeCarrito)),1)) ;
     let productoEnProductos = productos.find(producto => producto.nombre === productoDeCarrito.nombre) ;
-    productoEnProductos.stock+=1 ;
+    productoEnProductos.stock+=1;
     crearCarrito() ;
     mostrarTotalCarrito() ;
     guardarEnLocalStorage() ;
@@ -89,8 +90,6 @@ function mostrarSinStock(productoElegido) {
     stock = verificarStock(productoElegido) ;
     stock===true ? sinStock.innerHTML="" : sinStock.innerHTML = `Sin stock` ;
 }
-
-
 
 /* function filtrarMenorPrecio(){
     productos.sort(((a, b) => a.precio - b.precio));
@@ -110,7 +109,7 @@ function agregarAlCarrito (productoElegido) {
     stock = verificarStock(productoElegido)
     if(stock===true) 
            {const existe = carrito.find(producto => producto.nombre === productoElegido.nombre);
-            existe===undefined ? carrito.push(productoElegido) : existe.can=existe.can+1;
+            existe===undefined ? (carrito.push(productoElegido) , productoElegido.can=productoElegido.can+1) : existe.can=existe.can+1;
             tabla.innerHTML= "" ;
             crearCarrito() ;
                 //agregar alert(`Agregaste ${productoElegido.nombre} al carrito`) pero mas lindos
@@ -170,7 +169,5 @@ terminarCompra.onclick = () => { if (carrito.length !== 0){
        timer: 3000
      })
 }}
-
-
 
 
