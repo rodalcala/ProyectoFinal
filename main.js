@@ -14,6 +14,7 @@ async function obtenerJsonLocal(){
     const JSON = await fetch('/productos.json') ;
     const data = await JSON.json() ;
     productos = data ;
+    console.log(productos)
     verificarLocalStorage()
     creandoCard()
 }
@@ -27,13 +28,13 @@ const cards = document.getElementById("cards")
 const tabla = document.getElementById("tbody")
 const tfoot = document.getElementById("tfoot")
 const terminarCompra = document.getElementById("terminarCompra")
-const precioCreciente = document.getElementById("precioCreciente") 
+const filtro = document.getElementById("filtro") 
 
 //Verificar que el storage no tenga un carrito y stock de productos guardado y si es asi agregarlo al carrito actual
 let carrito = []
 function verificarLocalStorage(){
 localStorage.getItem("carrito") && (carrito = JSON.parse(localStorage.getItem("carrito"))) ;
-localStorage.getItem("productos") ? productos = JSON.parse(localStorage.getItem("productos")) : localStorage.setItem("productos",JSON.stringify(productos)) ;
+localStorage.getItem("productos") && (productos = JSON.parse(localStorage.getItem("productos")))  ;
 }
 
 verificarLocalStorage()
@@ -91,9 +92,15 @@ function mostrarSinStock(productoElegido) {
     stock===true ? sinStock.innerHTML="" : sinStock.innerHTML = `Sin stock` ;
 }
 
-/* function filtrarMenorPrecio(){
-    productos.sort(((a, b) => a.precio - b.precio));
-    console.log(productos)
+/* function filtrar(){ 
+    if (filtro.value === "precioDecreciente"){
+        productos.sort((a, b) => a.precio - b.precio);
+    }else if(filtro.value === "precioCreciente"){
+        productos.sort((a, b) => b.precio - a.precio)
+    }else if(filtro.value === "alfabetico"){
+        productos.sort((a, b) => a.nombre.localeCompare(b.nombre))  
+    }
+    cards.innerHTML = " "
     creandoCard()
 } */
 
@@ -109,7 +116,11 @@ function agregarAlCarrito (productoElegido) {
     stock = verificarStock(productoElegido)
     if(stock===true) 
            {const existe = carrito.find(producto => producto.nombre === productoElegido.nombre);
-            existe===undefined ? (carrito.push(productoElegido) , productoElegido.can=productoElegido.can+1) : existe.can=existe.can+1;
+            if (existe===undefined){
+                let nuevoProducto = {...productoElegido, can:1};
+                carrito.push(nuevoProducto);
+                }else{
+                existe.can=existe.can+1;}
             tabla.innerHTML= "" ;
             crearCarrito() ;
                 //agregar alert(`Agregaste ${productoElegido.nombre} al carrito`) pero mas lindos
@@ -143,8 +154,6 @@ for (const producto of productos) {
 }
 }
 
-/* precioCreciente.addEventListener("click",filtrarMenorPrecio())
- */
 terminarCompra.onclick = () => { if (carrito.length !== 0){
     Swal.fire({
    position: 'center',
@@ -169,5 +178,3 @@ terminarCompra.onclick = () => { if (carrito.length !== 0){
        timer: 3000
      })
 }}
-
-
