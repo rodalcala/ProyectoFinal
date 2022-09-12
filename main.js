@@ -11,7 +11,7 @@ const maceta = new Producto ("Maceta", 600, 2, "maceta.jpeg", 1) ; productos.pus
 
 //Obteniendo nuestra base de productos desde JSON y renderizandolos
 async function obtenerJsonLocal(){
-    const JSON = await fetch('/productos.json') ;
+    const JSON = await fetch('https://proyecto-final-two-red.vercel.app/productos.json') ;
     const data = await JSON.json() ;
     productos = data ;
     console.log(productos)
