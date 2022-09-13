@@ -29,6 +29,8 @@ const tabla = document.getElementById("tbody")
 const tfoot = document.getElementById("tfoot")
 const terminarCompra = document.getElementById("terminarCompra")
 const filtro = document.getElementById("filtro") 
+//Evento onchange a filtro
+filtro.onchange = () => filtrar()
 
 //Verificar que el storage no tenga un carrito y stock de productos guardado y si es asi agregarlo al carrito actual
 let carrito = []
@@ -92,17 +94,18 @@ function mostrarSinStock(productoElegido) {
     stock===true ? sinStock.innerHTML="" : sinStock.innerHTML = `Sin stock` ;
 }
 
-/* function filtrar(){ 
-    if (filtro.value === "precioDecreciente"){
+function filtrar(){ let seleccion = filtro.value
+    console.log(filtro.value)
+    if (seleccion === "precioCreciente"){
         productos.sort((a, b) => a.precio - b.precio);
-    }else if(filtro.value === "precioCreciente"){
+    }else if(seleccion === "precioDecreciente"){
         productos.sort((a, b) => b.precio - a.precio)
-    }else if(filtro.value === "alfabetico"){
+    }else if(seleccion === "alfabetico"){
         productos.sort((a, b) => a.nombre.localeCompare(b.nombre))  
     }
-    cards.innerHTML = " "
+    cards.innerHTML = ""
     creandoCard()
-} */
+}
 
 /* function cambiarCantidad() {
     productos.forEach (producto => {   
