@@ -16,7 +16,7 @@ async function obtenerJsonLocal(){
     productos = data ;
     console.log(productos)
     verificarLocalStorage()
-    creandoCard()
+    creandoCard(productos)
 }
 obtenerJsonLocal()
 
@@ -29,8 +29,10 @@ const tabla = document.getElementById("tbody")
 const tfoot = document.getElementById("tfoot")
 const terminarCompra = document.getElementById("terminarCompra")
 const filtro = document.getElementById("filtro") 
+const buscador = document.getElementById("buscar") 
 //Evento onchange a filtro
 filtro.onchange = () => filtrar()
+buscador.onchange = () => buscar()
 
 //Verificar que el storage no tenga un carrito y stock de productos guardado y si es asi agregarlo al carrito actual
 let carrito = []
@@ -94,7 +96,8 @@ function mostrarSinStock(productoElegido) {
     stock===true ? sinStock.innerHTML="" : sinStock.innerHTML = `Sin stock` ;
 }
 
-function filtrar(){ let seleccion = filtro.value
+function filtrar(){ 
+    let seleccion = filtro.value
     console.log(filtro.value)
     if (seleccion === "precioCreciente"){
         productos.sort((a, b) => a.precio - b.precio);
@@ -104,7 +107,19 @@ function filtrar(){ let seleccion = filtro.value
         productos.sort((a, b) => a.nombre.localeCompare(b.nombre))  
     }
     cards.innerHTML = ""
-    creandoCard()
+    creandoCard(productos)
+}
+
+function buscar() {
+    console.log(buscador.value.toLowerCase())
+    let productoBuscado = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value.toLowerCase()))
+    console.log(productoBuscado)
+    cards.innerHTML = ""   
+    if
+    (productoBuscado.length === 0){Swal.fire('No se encontraron resultados para tu busqueda'),
+    cards.innerHTML = "No se encontraron resultados para tu busqueda",
+    buscador.value = ""
+    }else{creandoCard(productoBuscado)}
 }
 
 /* function cambiarCantidad() {
@@ -141,7 +156,7 @@ function agregarAlCarrito (productoElegido) {
 }
 
 //Creando las cards para cada producto Y Evento agregando al carrito la card elegida
-function creandoCard() {
+function creandoCard(productos) {
 for (const producto of productos) {
     const card = document.createElement("div") ;
     card.innerHTML = `<img src="${producto.imagen}" class="card-img-top" alt="${producto.nombre}">

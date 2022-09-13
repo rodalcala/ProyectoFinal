@@ -39,7 +39,8 @@ footer {
 
 }
 
-.card {width: 18rem}
+.card {width: 18rem ;
+margin: 20px;}
 
 #tucarrito {font-size: 22px;
 }
