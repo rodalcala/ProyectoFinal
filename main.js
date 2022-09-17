@@ -1,15 +1,3 @@
-/* class Producto {constructor (nombre, precio, stockInicial, imagen, can) //funcion constructora de productos objetos
-                {this.nombre = nombre
-                this.precio = precio
-                this.stock = parseInt(stockInicial) //stock inicial del producto
-                this.imagen = imagen
-                this.can = can}} //cantidad seleccionada
-
-const planta = new Producto ("Planta", 400, 2, "planta.jpeg", 1) ; productos.push(planta)
-const kokedama = new Producto ("Kokedama", 1000, 2, "kokedama.jpeg", 1) ; productos.push(kokedama)
-const maceta = new Producto ("Maceta", 600, 2, "maceta.jpeg", 1) ; productos.push(maceta) */
-
-
 //Definiendo variables y obteniendo elementos
 let productos = []
 let stock ;
@@ -31,15 +19,6 @@ contacto.onclick = () => desplegarContacto()
 nosotros.onclick = () => desplegarNosotros()
 terminarCompra.onclick = () => terminandoCompra()
 home.onclick = () => desplegarHome()
-
-//Obtener base de datos con nuestros productos y renderizarlos
-obtenerJsonLocal()
-
-//Antes de entrar se checkea si hay algo guardado en storage, si lo hay se lo agrega al carrito y se calcula el total hasta el momento
-verificarLocalStorage()
-crearCarrito() 
-mostrarTotalCarrito() 
-
 
 //Definiendo las funciones 
 async function obtenerJsonLocal(){
@@ -83,8 +62,8 @@ function crearCarrito() {
                     <td>$${productoCarrito.precio*productoCarrito.can}</td>
                     <td><button id="borrar${productoCarrito.nombre}" type="button" class="btn btn-dark">Borrar</button></td>`
     tabla.appendChild(productoAgregado)
-    document.getElementById(`borrar${productoCarrito.nombre}`).addEventListener("click",function(){borrarProductoCarrito(productoCarrito)});
-})}
+    document.getElementById(`borrar${productoCarrito.nombre}`).addEventListener("click",function(){borrarProductoCarrito(productoCarrito)});})
+}
 
 function borrarProductoCarrito(productoDeCarrito) {
     tabla.innerHTML= ""
@@ -111,8 +90,6 @@ function filtrar(){
         productos.sort((a, b) => b.precio - a.precio)
     }else if(seleccion === "alfabetico"){
         productos.sort((a, b) => a.nombre.localeCompare(b.nombre))  
-    }else if(seleccion === "masVendidos"){
-        productos = productos
     }
     principal.innerHTML = ""
     creandoCard(productos)
@@ -134,25 +111,31 @@ function validacionNombre() {
     if(isNaN(nombre.value)){nombre.style.color = "black"}else{nombre.style.color = "red"}
 }
 
-function validacionEmail() {
-
-}
-
 function validacionNumero() {
     if(isNaN(numero.value)){numero.style.color = "red"}else{numero.style.color = "black"}
 }
 
-function validarFormulario(ev) {if(numero.value===""||isNaN(numero.value)||nombre.value===""||!isNaN(nombre.value)||email.value===""||consulta.value==="")
- {ev.preventDefault();
-    if(numero.value===""||nombre.value===""||email.value===""||consulta.value==="")
-    {Swal.fire('Por favor ingresa todos los datos')}
-    else if(isNaN(numero.value)){Swal.fire('Por favor ingresa un numero de telefono valido')}
-    else if(!isNaN(nombre.value)){Swal.fire('Por favor ingresa un nombre valido')}}
- else
- {setTimeout(ev, 5000); Swal.fire({title:'Gracias por tu consulta, te contactaremos a la brevedad', timer: 1500})}
+function validarFormulario(ev) {
+    if (numero.value===""||isNaN(numero.value)||nombre.value===""||!isNaN(nombre.value)||email.value===""||consulta.value===""){
+        ev.preventDefault();
+        if(numero.value===""||nombre.value===""||email.value===""||consulta.value===""){
+            Swal.fire('Por favor ingresa todos los datos')
+        }else if(isNaN(numero.value)){
+            Swal.fire('Por favor ingresa un numero de telefono valido')
+        }else if(!isNaN(nombre.value)){
+            Swal.fire('Por favor ingresa un nombre valido')}
+        }else{ev.preventDefault(); 
+             Swal.fire({title:'Gracias por tu consulta, te contactaremos a la brevedad', timer: 1500})
+            numero.value =""
+            nombre.value=""
+            consulta.value=""
+            email.value=""}
 }
 
 function desplegarContacto() {
+    contacto.className= "nav-link active"
+    home.className= "nav-link"
+    nosotros.className= "nav-link"
     principal.innerHTML = `
     <form id="formulario">
     <div class="mb-3">
@@ -175,18 +158,19 @@ function desplegarContacto() {
     </form>
     `
     principal.className = "row justify-content-center"
-    const email = document.getElementById("email")
     const nombre = document.getElementById("nombre")
     const numero = document.getElementById("numero")
     const consulta = document.getElementById("consulta")
     const formulario = document.getElementById("formulario")
-    email.oninput = () => validacionEmail()
     nombre.oninput = () => validacionNombre()
     numero.oninput = () => validacionNumero()
     formulario.onsubmit = (ev) => validarFormulario(ev)
 }
 
 function desplegarNosotros() {
+    nosotros.className= "nav-link active"
+    home.className= "nav-link"
+    contacto.className= "nav-link"
     principal.innerHTML = `
     <section class="row align-items-center">
 			<main class="col">
@@ -219,17 +203,38 @@ function desplegarNosotros() {
 }
 
 function desplegarHome() {
+    nosotros.className= "nav-link"
+    home.className= "nav-link active"
+    contacto.className= "nav-link"
     creandoCard(productos)
     principal.className= "row widgets justify-content-evenly"
 }
 
-/* function cambiarCantidad() {
-    productos.forEach (producto => {   
-    let cantidadProductos = document.getElementById(`cantidad-producto-${producto.nombre}`);
-        cantidadProductos.addEventListener("change", (e) => {
-        let nuevaCantidad = e.target.value;
-        producto.can = nuevaCantidad; })})
-} */
+function terminandoCompra() { 
+if (carrito.length !== 0){
+   Swal.fire({
+   position: 'center',
+   icon: 'success',
+   text: 'Tu compra fue realizada con exito',
+   title: 'Gracias por tu compra',
+   showConfirmButton: false,
+   timer: 2000
+   })
+   carrito = [];
+   localStorage.removeItem("carrito");
+   tabla.innerHTML= "";
+   crearCarrito();
+   mostrarTotalCarrito();
+}else{
+   Swal.fire({
+       position: 'center',
+       icon: 'error',
+       title: 'No hay nada en tu carrito',
+       text: 'Elige un producto e intentalo de nuevo',
+       showConfirmButton: false,
+       timer: 3000
+     })}
+}
 
 function agregarAlCarrito (productoElegido) {
     stock = verificarStock(productoElegido)
@@ -259,11 +264,11 @@ function agregarAlCarrito (productoElegido) {
 function creandoCard(productos) {
     principal.innerHTML= `
         <div class="input-group mb-3" id="filtros">
-        <label class="input-group-text" for="inputGroupSelect01">Filtros</label>
-        <select class="form-select" id="filtro" onchange="filtrar()" >
-        <option id="masVendido" value="masVendidos">Mas vendidos</option>
+        <label class="input-group-text" for="filtro">Filtros</label>
+        <select class="form-select" id="filtro" onchange="filtrar()">
+        <option selected>Elige un filtro</option>
         <option value="precioCreciente">Precio creciente</option>
-        <option value="precioDecreciente">Precio decreciente</option>
+        <option class="active" value="precioDecreciente">Precio decreciente</option>
         <option value="alfabetico">A - Z</option>
         </select>
         </div>`
@@ -281,29 +286,11 @@ function creandoCard(productos) {
     productos.forEach(producto => { document.getElementById(`${producto.nombre}btn`).addEventListener("click",function(){agregarAlCarrito(producto)})});   
 }
 
+//EJECUTANDO LA APP
+//Obtener base de datos con nuestros productos y renderizarlos
+obtenerJsonLocal()
+//Antes de entrar se checkea si hay algo guardado en storage, si lo hay se lo agrega al carrito y se calcula el total hasta el momento
+verificarLocalStorage()
+crearCarrito() 
+mostrarTotalCarrito() 
 
-
-function terminandoCompra() { if (carrito.length !== 0){
-    Swal.fire({
-   position: 'center',
-   icon: 'success',
-   text: 'Tu compra fue realizada con exito',
-   title: 'Gracias por tu compra',
-   showConfirmButton: false,
-   timer: 2000
-   })
-   carrito = [];
-   localStorage.removeItem("carrito");
-   tabla.innerHTML= "";
-   crearCarrito();
-   mostrarTotalCarrito();
-}else{
-   Swal.fire({
-       position: 'center',
-       icon: 'error',
-       title: 'No hay nada en tu carrito',
-       text: 'Elige un producto e intentalo de nuevo',
-       showConfirmButton: false,
-       timer: 3000
-     })
-}}
