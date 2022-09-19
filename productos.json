@@ -1,0 +1,87 @@
+[{
+                "nombre":"Planta",
+                "precio":400,
+                "stock":2,
+                "imagen":"planta.jpeg"
+                
+                },
+                
+                {
+                "nombre":"Maceta",
+                "precio":600,
+                "stock":2,
+                "imagen":"maceta.jpeg"
+                
+                },
+
+                {
+                "nombre":"Kokedama tradescantia",
+                "precio":1000,
+                "stock":2,
+                "imagen":"Tradescantia.jpeg"
+                
+                },
+
+                {
+                "nombre":"Kokedama Nolina",
+                "precio":2000,
+                "stock":2,
+                "imagen":"Nolina.jpeg"
+                
+                },
+
+                {
+                "nombre":"Kokedama Rubra",
+                "precio":1550,
+                "stock":2,
+                "imagen":"Rubra.jpeg"
+                
+                },
+
+                {
+                "nombre":"Kokedama Lazo de amor",
+                "precio":700,
+                "stock":2,
+                "imagen":"Lazodeamor.jpeg"
+                
+                },
+
+                {
+                "nombre":"Kokedama Ficus",
+                "precio":1700,
+                "stock":2,
+                "imagen":"Ficus.jpeg"
+                
+                },
+
+                {
+                "nombre":"Kokedama combo",
+                "precio":3550,
+                "stock":2,
+                "imagen":"Combo.jpeg"
+                
+                },
+
+                {
+                "nombre":"Kokedama Singonio rosado",
+                "precio":1550,
+                "stock":2,
+                "imagen":"Singoniorosado.jpeg"
+                
+                },
+
+                {
+                "nombre":"Kokedama Peperomia",
+                "precio":1100,
+                "stock":2,
+                "imagen":"Peperomia.jpeg"
+                
+                },
+
+                {
+                "nombre":"Plato de arcilla",
+                "precio":950,
+                "stock":2,
+                "imagen":"Platodearcilla.jpeg"
+                
+                }]
