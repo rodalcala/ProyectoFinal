@@ -20,20 +20,29 @@ nosotros.onclick = () => desplegarNosotros()
 terminarCompra.onclick = () => terminandoCompra()
 home.onclick = () => desplegarHome()
 
-//Definiendo las funciones 
+
+//////////////DEFINIENDO FUNCIONES
+//Obtener mi array de productos
 async function obtenerJsonLocal(){
-    const JSON = await fetch('/productos.json') ;
+    const JSON = await fetch('https://proyecto-final-rocio-alcala.vercel.app/productos.json') ;
     const data = await JSON.json() ;
     productos = data ;
     verificarLocalStorage()
     creandoCard(productos)
 }
 
+//Buscar si en el storage ya estaba definido productos y carrito
 function verificarLocalStorage(){
     localStorage.getItem("carrito") && (carrito = JSON.parse(localStorage.getItem("carrito"))) ;
     localStorage.getItem("productos") && (productos = JSON.parse(localStorage.getItem("productos")))  ;
-}    
+}
 
+function guardarEnLocalStorage() {
+    localStorage.setItem("carrito",JSON.stringify(carrito))
+    localStorage.setItem("productos",JSON.stringify(productos))
+}
+
+//Manejando y verficando el stock
 function actualizarStock(productoIngresado) {
     productoIngresado.stock = productoIngresado.stock - 1 ;
 }
@@ -42,11 +51,13 @@ function verificarStock(productoIngresado) {
     return stock = productoIngresado.stock >= 1 ? true : false ;
 }
 
-function guardarEnLocalStorage() {
-    localStorage.setItem("carrito",JSON.stringify(carrito))
-    localStorage.setItem("productos",JSON.stringify(productos))
+function mostrarSinStock(productoElegido) {
+    const sinStock = document.getElementById(`stock${productoElegido.nombre}`) ;
+    stock = verificarStock(productoElegido) ;
+    stock===true ? sinStock.innerHTML="" : sinStock.innerHTML = `Sin stock` ;
 }
 
+//Creacion del carrito
 function mostrarTotalCarrito() {    
     totalCarrito = carrito.reduce((suma,el) => (suma + (el.precio*el.can)),0)
     carrito.length === 0 ? tfoot.innerHTML =`<th colspan="12"> No cargaste nada a tu carrito </th>` : tfoot.innerHTML = `<th colspan="12"> El total de tu carrito es de $${totalCarrito}</th>`
@@ -76,12 +87,7 @@ function borrarProductoCarrito(productoDeCarrito) {
     mostrarSinStock(productoDeCarrito) ;
 }
 
-function mostrarSinStock(productoElegido) {
-    const sinStock = document.getElementById(`stock${productoElegido.nombre}`) ;
-    stock = verificarStock(productoElegido) ;
-    stock===true ? sinStock.innerHTML="" : sinStock.innerHTML = `Sin stock` ;
-}
-
+//Reordenar el array productos para filtros y buscador
 function filtrar(){ 
     let seleccion = filtro.value
     if (seleccion === "precioCreciente"){
@@ -107,6 +113,7 @@ function buscar() {
     }else{creandoCard(productoBuscado)}
 }
 
+//Validaciones del formulario
 function validacionNombre() {
     if(isNaN(nombre.value)){nombre.style.color = "black"}else{nombre.style.color = "red"}
 }
@@ -132,6 +139,7 @@ function validarFormulario(ev) {
             email.value=""}
 }
 
+//Despliegue de las pestanas del menu con modificacion del DOM
 function desplegarContacto() {
     contacto.className= "nav-link active"
     home.className= "nav-link"
@@ -210,6 +218,7 @@ function desplegarHome() {
     principal.className= "row widgets justify-content-evenly"
 }
 
+//Terminando compra vaciando el carrito
 function terminandoCompra() { 
 if (carrito.length !== 0){
    Swal.fire({
@@ -236,6 +245,7 @@ if (carrito.length !== 0){
      })}
 }
 
+//Agregando cada producto al carrito segun haya stock o modificando la cantidad si ya estaba cargado
 function agregarAlCarrito (productoElegido) {
     stock = verificarStock(productoElegido)
     if(stock===true) 
@@ -260,7 +270,7 @@ function agregarAlCarrito (productoElegido) {
         }  mostrarSinStock(productoElegido)
 }
 
-//Creando las cards para cada producto Y Evento agregando al carrito la card elegida
+//Creando las cards para cada producto y evento agregando al carrito la card elegida
 function creandoCard(productos) {
     principal.innerHTML= `
         <div class="input-group mb-3" id="filtros">
@@ -286,7 +296,9 @@ function creandoCard(productos) {
     productos.forEach(producto => { document.getElementById(`${producto.nombre}btn`).addEventListener("click",function(){agregarAlCarrito(producto)})});   
 }
 
-//EJECUTANDO LA APP
+
+
+////////////////EJECUTANDO LA APP
 //Obtener base de datos con nuestros productos y renderizarlos
 obtenerJsonLocal()
 //Antes de entrar se checkea si hay algo guardado en storage, si lo hay se lo agrega al carrito y se calcula el total hasta el momento
